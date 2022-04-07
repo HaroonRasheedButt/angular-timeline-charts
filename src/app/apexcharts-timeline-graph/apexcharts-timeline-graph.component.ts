@@ -9,8 +9,11 @@ import {
   ApexPlotOptions,
   ApexDataLabels,
   ApexYAxis,
-  ApexGrid
+  ApexGrid,
+  ApexMarkers,
+  ApexLegend
 } from "ng-apexcharts";
+import { TimeLineData } from './data-model';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -21,6 +24,8 @@ export type ChartOptions = {
   title: ApexTitleSubtitle;
   plotOptions: ApexPlotOptions;
   dataLabels: ApexDataLabels;
+  // markers: ApexMarkers;
+  legend: ApexLegend;
 };
 @Component({
   selector: 'app-apexcharts-timeline-graph',
@@ -31,7 +36,9 @@ export class ApexchartsTimelineGraphComponent implements OnInit {
 
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: ChartOptions;
+  private timelineData!: TimeLineData[];
   constructor() {
+
     this.chartOptions = {
       series: [
         {
@@ -39,10 +46,19 @@ export class ApexchartsTimelineGraphComponent implements OnInit {
             {
               x: 'leads.demo',
               y: [
-                new Date('2019-02-25').getTime(),
-                new Date('2019-03-04').getTime()
+                new Date('2019-02-25').getTime(), // start date
+                new Date('2019-03-04').getTime() // end date
               ],
-              fillColor: '#008FFB'
+              fillColor: '#008FFB',
+              goals: [
+                {
+                  name: 'marker',
+                  value: new Date('2019-03-04').getTime(), // end date
+                  strokeWidth: 15,
+                  strokeHeight: 0,
+                  strokeLineCap: 'round',
+                  strokeColor: '#198be2'
+                }]
             },
             {
               x: 'salesforce.demo',
@@ -50,7 +66,16 @@ export class ApexchartsTimelineGraphComponent implements OnInit {
                 new Date('2019-02-27').getTime(),
                 new Date('2019-03-08').getTime()
               ],
-              fillColor: '#00E396'
+              fillColor: '#00E396',
+              goals: [
+                {
+                  name: 'marker',
+                  value: new Date('2019-03-08').getTime(),
+                  strokeWidth: 15,
+                  strokeHeight: 0,
+                  strokeLineCap: 'round',
+                  strokeColor: '#00b678'
+                }]
             },
             {
               x: 'egr.demo',
@@ -58,7 +83,16 @@ export class ApexchartsTimelineGraphComponent implements OnInit {
                 new Date('2019-02-27').getTime(),
                 new Date('2019-03-10').getTime()
               ],
-              fillColor: '#775DD0'
+              fillColor: '#775DD0',
+              goals: [
+                {
+                  name: 'marker',
+                  value: new Date('2019-03-10').getTime(),
+                  strokeWidth: 15,
+                  strokeHeight: 0,
+                  strokeLineCap: 'round',
+                  strokeColor: '#5436bb'
+                }]
             },
             {
               x: 'portal.demo',
@@ -66,7 +100,16 @@ export class ApexchartsTimelineGraphComponent implements OnInit {
                 new Date('2019-02-27').getTime(),
                 new Date('2019-03-12').getTime()
               ],
-              fillColor: '#FEB019'
+              fillColor: '#FEB019',
+              goals: [
+                {
+                  name: 'marker',
+                  value: new Date('2019-03-12').getTime(),
+                  strokeWidth: 15,
+                  strokeHeight: 0,
+                  strokeLineCap: 'round',
+                  strokeColor: '#de9301',
+                }]
             },
             {
               x: 'verato.demo',
@@ -74,7 +117,16 @@ export class ApexchartsTimelineGraphComponent implements OnInit {
                 new Date('2019-02-27').getTime(),
                 new Date('2019-03-17').getTime()
               ],
-              fillColor: '#FF4560'
+              fillColor: '#FF4560',
+              goals: [
+                {
+                  name: 'marker',
+                  value: new Date('2019-03-17').getTime(),
+                  strokeWidth: 15,
+                  strokeHeight: 0,
+                  strokeLineCap: 'round',
+                  strokeColor: '#ff0429'
+                }]
             }
           ]
         }
@@ -88,7 +140,7 @@ export class ApexchartsTimelineGraphComponent implements OnInit {
             pan: true,
             zoom: false,
             zoomin: false,
-            zoomout: false
+            zoomout: false,
           }
         }
       },
@@ -99,6 +151,9 @@ export class ApexchartsTimelineGraphComponent implements OnInit {
           barHeight: "50",
           dataLabels: {
             hideOverflowingLabels: false
+          },
+          colors:{
+            backgroundBarOpacity: 0.5
           }
         }
       },
@@ -116,12 +171,15 @@ export class ApexchartsTimelineGraphComponent implements OnInit {
         }
       },
       xaxis: {
-        type: 'datetime',
-        
+        type: 'datetime'
       },
       yaxis: {
         show: false,
-        reversed: true
+        reversed: true,
+        opposite: true,
+        axisTicks: {
+          show: true
+        }
       },
       grid: {
         row: {
@@ -132,6 +190,31 @@ export class ApexchartsTimelineGraphComponent implements OnInit {
       title: {
         text: "TimeLine Chart Angular" 
       },
+      // markers:{
+      //   shape: "circle",
+      //   size: 7,
+      //   radius: 5,
+      //   discrete: [{
+      //     seriesIndex: 0,
+      //     // For dataPointIndex: 0 there is no discrete marker at all!
+      //     dataPointIndex: 1,
+          
+      //     // Also docs says its "fill" and "stroke", but "fillColor" and "strokeColor" are working
+      //     fillColor: "#0A0",
+      //     strokeColor: "#FFF",
+      //     size: 7,
+      //     shape: "circle"
+      //   }
+      //   ]
+      // }
+      legend: {
+        show: true,
+        showForSingleSeries: true,
+        customLegendItems: ['salesforce.demo', 'egr.demo'],
+        markers: {
+          fillColors: ['#00E396', '#775DD0']
+        }
+      }
     };
 
     // series: [
